@@ -198,6 +198,7 @@ fork(void)
   }
   np->sz = curproc->sz;
   np->parent = curproc;
+  np->remainingTicks = INTERV;
   *np->tf = *curproc->tf;
 
   // Clear %eax so that fork returns 0 in the child.
@@ -215,6 +216,7 @@ fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
+  np->remainingTicks = INTERV;
 
   release(&ptable.lock);
 
@@ -387,6 +389,7 @@ yield(void)
 {
   acquire(&ptable.lock);  //DOC: yieldlock
   myproc()->state = RUNNABLE;
+  myproc()->remainingTicks = INTERV;
   sched();
   release(&ptable.lock);
 }
@@ -460,8 +463,10 @@ wakeup1(void *chan)
   struct proc *p;
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == SLEEPING && p->chan == chan)
+    if(p->state == SLEEPING && p->chan == chan) {
+      p->remainingTicks = INTERV;
       p->state = RUNNABLE;
+    }
 }
 
 // Wake up all processes sleeping on chan.
