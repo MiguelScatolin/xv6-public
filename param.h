@@ -12,3 +12,5 @@
 #define NBUF         (MAXOPBLOCKS*3)  // size of disk block cache
 #define FSSIZE       1000   // size of file system in blocks
 #define INTERV        5   // number of ticks for the interval between preemption
+#define LOWEST_PRIORITY_WAIT_LIMIT          5   // number of ticks to promote a process from queue 1 to 2
+#define DEFAULT_PRIORITY_WAIT_LIMIT         5   // number of ticks to promote a process from queue 1 to 2

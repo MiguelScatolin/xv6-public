@@ -34,6 +34,8 @@ struct context {
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
+enum priorityLevel { LOWEST_PIORITY = 1, DEFAULT_PRIORITY = 2, HIGHEST_PRIORITY = 3 };
+
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
@@ -50,6 +52,8 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   uint remainingTicks;         // Number of ticks remaining before yield
+  uint waitedTicks;            // Number of ticks waited due to priority
+  enum priorityLevel priority; // Number of ticks remaining before yield
 };
 
 // Process memory is laid out contiguously, low addresses first:
